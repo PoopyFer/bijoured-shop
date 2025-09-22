@@ -1,0 +1,212 @@
+
+:root {
+    --primary-color: #e75cd0;
+    --secondary-color: #f8f9fa;
+    --accent-color: #85dd13;
+    --bs-primary: #e75cd0; /* Sobrescribe el azul de Bootstrap */
+    --bs-primary-rgb: 231, 92, 208;
+}
+
+body {
+    background-color: #f9f6ff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar {
+    background-color: var(--primary-color) !important;
+}
+
+.card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 480px; /* Aumenta la altura */
+    display: flex;
+    flex-direction: column;
+}
+.card:hover {
+    transform: translateY(-5px); /* Efecto zoom suave al pasar el mouse */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.btn-primary {
+    background-color: var(--primary-color) !important;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #e74cbe !important;
+    transform: scale(1.05);
+}
+
+.btn-danger {
+    background-color: var(--accent-color) !important;
+    border: none;
+    border-radius: 8px;
+    padding: 5px 15px;
+}
+
+.btn-outline-danger {
+    color: var(--accent-color); /* #85dd13*/
+    border-color: var(--accent-color);
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--accent-color);
+    color: #000; /* Texto negro para mejor contraste con el verde */
+    border-color: var(--accent-color);
+}
+
+.product-img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.stock-info {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+.cart-item {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.section-title {
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 30px;
+    color: #6c757d;
+}
+
+#cart-total {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.custom-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.custom-btn:hover {
+    background-color: #b006a2;  /* Mismo color de hover que btn-primary */
+    color: white;
+    transform: scale(1.05);
+}
+
+.card-img-top {
+    height: 100%; /* Altura para imágenes */
+    object-fit: cover; /* Asegura que la imagen cubra el espacio */
+    object-position: center; /* Enfoca */
+    transition: transform 0.3s ease;
+    width: 100%;
+}
+
+.card-body {
+    flex: 1; /* Hace que el cuerpo ocupe el espacio restante */
+    display: flex;
+    flex-direction: column;
+    padding: 1.2rem;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+.card-text {
+    flex-grow: 1rem; /* Empuja el botón hacia abajo */
+}
+
+.stock-info {
+    margin-top: auto; /* Empuja elementos siguientes hacia abajo */
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Contenedor de botones e input */
+.card .input-group {
+    margin-bottom: 0.5rem;
+}
+
+.card .custom-btn {
+    margin-top: 0.5rem;
+}
+
+/* FOOTER STYLES */
+.footer {
+    background-color: #343a40;
+    color: white;
+    padding: 40px 0 20px;
+    margin-top: auto;
+}
+
+.footer h5 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.footer a {
+    color: #ddd;
+    transition: color 0.3s;
+}
+
+.footer a:hover {
+    color: white;
+}
+
+.social-links a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background-color: #495057;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.social-links a:hover {
+    background-color: var(--primary-color);
+}
+
+#newsletter-message {
+    min-height: 40px;
+    margin-top: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .product-img {
+        height: 160px;
+    }
+    
+    .footer .col-md-6,
+    .footer .col-md-3 {
+        margin-bottom: 30px;
+    }
+}
