@@ -27,10 +27,20 @@ body {
     height: 480px; /* Aumenta la altura */
     display: flex;
     flex-direction: column;
+    height: auto; /* Altura flexible según contenido */
 }
 .card:hover {
     transform: translateY(-5px); /* Efecto zoom suave al pasar el mouse */
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* Contenedor de imagen con relación de aspecto vertical */
+.card-img-container {
+    width: 100%;
+    height: 0;
+    padding-bottom: 125%; /* 500/400 = 1.25 = 125% */
+    overflow: hidden;
+    position: relative;
 }
 
 .btn-primary {
@@ -119,7 +129,7 @@ body {
 .card-img-top {
     height: 100%; /* Altura para imágenes */
     object-fit: cover; /* Asegura que la imagen cubra el espacio */
-    object-position: center; /* Enfoca */
+    object-position: center; 
     transition: transform 0.3s ease;
     width: 100%;
 }
@@ -199,14 +209,48 @@ body {
     margin-top: 10px;
 }
 
-/* Responsive adjustments */
+/* RESPONSIVE */
 @media (max-width: 768px) {
-    .product-img {
-        height: 160px;
-    }
-    
+
     .footer .col-md-6,
     .footer .col-md-3 {
         margin-bottom: 30px;
+    }
+}
+/* ========== CORRECCIÓN CARDS RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .card {
+        height: auto;
+        min-height: 380px;
+    }
+    
+    .card-img-container {
+        aspect-ratio: 3/4; /* Un poco más cuadrada en móvil */
+    }
+}
+
+.card-img-container {
+        height: 200px; /* Imágenes más compactas */
+    }
+    
+    .card-body {
+        padding: 1rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .stock-info {
+        margin-top: auto; /* Empuja botones hacia abajo */
+    }
+
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .card {
+        height: 420px;
+    }
+    
+    .card-img-container {
+        height: 220px;
     }
 }
