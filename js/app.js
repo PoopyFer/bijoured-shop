@@ -1,32 +1,129 @@
-
-// Base de datos de productos
-const productos = [
-    { id: 1, nombre: "Collar Arco Iris", precio: 25000, stock: 20, imagen:"images/productos/2-COLLAR1.webp" },
-    { id: 2, nombre: "Collar Marina", precio: 22000, stock: 15, imagen:"images/productos/2-COLLAR2.webp" }, 
-    { id: 3, nombre: "Collar Multicapas Cristal", precio: 45000, stock: 8, imagen: "images/productos/2-COLLAR3.webp" },
-    { id: 4, nombre: "Collar Oceanic", precio: 18000, stock: 25, imagen: "images/productos/2-COLLAR4.webp" },
-    { id: 5, nombre: "Collar Minimalista", precio: 28000, stock: 25, imagen: "images/productos/2-COLLAR5.webp" },
-    { id: 6, nombre: "Collar Piedras mia", precio: 18000, stock: 25, imagen: "images/productos/2-COLLAR6.webp" },
-];
-
-// Variables globales
-let carrito = [];
-let stock = {}; // Seguimos el stock actualizado
-
-// Inicializar la aplicación
+    // Base de datos de productos
+    const productos = [
+        { id: 1, nombre: "Collar Arco Iris", precio: 25000, stock: 20, imagen:"images/productos/2-COLLAR1.webp" },
+        { id: 2, nombre: "Collar Marina", precio: 22000, stock: 15, imagen:"images/productos/2-COLLAR2.webp" }, 
+        { id: 3, nombre: "Collar Multicapas Cristal", precio: 45000, stock: 8, imagen: "images/productos/2-COLLAR3.webp" },
+        { id: 4, nombre: "Collar Oceanic", precio: 18000, stock: 25, imagen: "images/productos/2-COLLAR4.webp" },
+        { id: 5, nombre: "Collar Minimalista", precio: 28000, stock: 25, imagen: "images/productos/2-COLLAR5.webp" },
+        { id: 6, nombre: "Collar Piedras mia", precio: 18000, stock: 25, imagen: "images/productos/2-COLLAR6.webp" },
+    ];
+    
+    // VARIABLES GLOBALESS
+    let carrito = [];
+    let stock = {}; // Seguimos el stock actualizado
+    
+    // ========================================
+// INICIO: FUNCIÓN DE BÚSQUEDA (AGREGAR ESTA SECCIÓN COMPLETA)
+// ========================================
+// Función para buscar productos en tiempo real
+function buscarProductos(termino) {
+    const terminoBusqueda = termino.toLowerCase().trim();
+    const container = document.getElementById('productos-container');
+    
+    // Si el término está vacío, mostrar todos los productos
+    if (terminoBusqueda === '') {
+        renderizarProductos();
+        container.classList.remove('searching');
+        document.getElementById('search-results-info').textContent = '';
+        return;
+    }
+    
+    // Filtrar productos que coincidan con el término de búsqueda
+    const productosFiltrados = productos.filter(producto => 
+        producto.nombre.toLowerCase().includes(terminoBusqueda)
+    );
+    
+    // Renderizar los productos filtrados
+    renderizarProductos(productosFiltrados);
+    
+    // Agregar clase para efectos visuales durante la búsqueda
+    container.classList.add('searching');
+    
+    // Actualizar información de resultados
+    const resultadosInfo = document.getElementById('search-results-info');
+    if (productosFiltrados.length > 0) {
+        resultadosInfo.innerHTML = `Se encontraron <span class="highlight">${productosFiltrados.length}</span> resultado(s) para <span class="highlight">"${termino}"</span>`;
+    } else {
+        resultadosInfo.innerHTML = `No se encontraron resultados para <span class="highlight">"${termino}"</span>`;
+    }
+}
+// ========================================
+// FIN: FUNCIÓN DE BÚSQUEDA
+// ========================================
+    
+    // INICIALIZAR LA APLICACION -DOMContentLoaded-
 document.addEventListener('DOMContentLoaded', () => {
     inicializarStock();
     renderizarProductos();
     actualizarCarrito();
     
-    // Event listeners
+    // EVENT LISTENERS
     document.getElementById('vaciar-carrito').addEventListener('click', vaciarCarrito);
     document.getElementById('comprar-btn').addEventListener('click', finalizarCompra);
     
     // Formulario de newsletter
     document.getElementById('newsletter-form').addEventListener('submit', manejarNewsletter);
-});
-
+    
+    // ========================================
+    // INICIO: EVENT LISTENERS PARA BÚSQUEDA (AGREGUE ESTA SECCIÓN COMPLETA)
+    // ========================================
+    // Event listener para el input de búsqueda
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', (e) => {
+        const termino = e.target.value;
+        buscarProductos(termino);
+        
+        // Mostrar/ocultar botón de limpiar
+        const clearButton = document.getElementById('clear-search');
+        clearButton.style.display = termino.trim() !== '' ? 'block' : 'none';
+    });
+    
+    // Event listener para el botón de limpiar búsqueda
+    document.getElementById('clear-search').addEventListener('click', () => {
+        searchInput.value = '';
+        buscarProductos('');
+        document.getElementById('clear-search').style.display = 'none';
+    });
+    // ========================================
+    // FIN: EVENT LISTENERS PARA BÚSQUEDA
+    // ========================================
+    
+    // ========================================
+    // INICIO: MANEJO RESPONSIVE DEL CARRITO (AGREGAR ESTA SECCIÓN AQUÍ)
+    // ========================================
+    // Manejar el colapso del carrito en móviles
+    const cartContent = document.getElementById('cart-content');
+    const cartHeader = document.getElementById('cart-header');
+    const cartToggle = cartHeader.querySelector('.btn');
+    
+    // Actualizar ícono del botón al colapsar/expandir
+    cartContent.addEventListener('shown.bs.collapse', () => {
+        cartToggle.innerHTML = '<i class="fas fa-chevron-up"></i>';
+    });
+    
+    cartContent.addEventListener('hidden.bs.collapse', () => {
+        cartToggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+    });
+    
+    // Forzar el colapso en móvil al cargar la página
+    if (window.innerWidth < 992) {
+        cartContent.classList.remove('show');
+    }
+    
+    // Ajustar al cambiar el tamaño de la ventana
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 992) {
+            cartContent.classList.add('show');
+        } else {
+            cartContent.classList.remove('show');
+            cartToggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+        }
+    });
+    // ========================================
+    // FIN: MANEJO RESPONSIVE DEL CARRITO
+    // ========================================
+    }); // <-- Este es el cierre del evento DOMContentLoaded
+    
 // Inicializar el stock
 function inicializarStock() {
     productos.forEach(producto => {
@@ -34,12 +131,27 @@ function inicializarStock() {
     });
 }
 
+// RENDERIZAR PRODUCTOS EN LA PAGINA 
+// ========================================
+// INICIO: MODIFICAR LA FUNCIÓN renderizarProductos (REEMPLAZAR LA FUNCIÓN EXISTENTE CON ESTA)
+// ========================================
 // Renderizar productos en la página
-function renderizarProductos() {
+function renderizarProductos(productosAMostrar = productos) {
     const container = document.getElementById('productos-container');
     container.innerHTML = '';
     
-    productos.forEach(producto => {
+    // Si no hay productos para mostrar, mostrar un mensaje
+    if (productosAMostrar.length === 0) {
+        container.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <h3>No se encontraron productos</h3>
+                <p>Intenta con otra búsqueda</p>
+            </div>
+        `;
+        return;
+    }
+    
+    productosAMostrar.forEach(producto => {
         const card = document.createElement('div');
         card.className = 'col-md-6 mb-4';
         card.innerHTML = `
@@ -63,8 +175,73 @@ function renderizarProductos() {
             </div>
         `;
         container.appendChild(card);
+        // ========================================
+        // INICIO: AGREGAR CLASE PARA EFECTOS VISUALES (AGREGUE ESTAS LÍNEAS)
+        // ========================================
+        // Si hay un término de búsqueda, agregar la clase 'match' a las tarjetas que coinciden
+        const terminoBusqueda = document.getElementById('search-input').value.trim();
+        if (terminoBusqueda !== '') {
+            card.querySelector('.card').classList.add('match');
+        }
+        // ========================================
+        // FIN: AGREGAR CLASE PARA EFECTOS VISUALES
+        // ========================================
     });
 }
+// ========================================
+// FIN: MODIFICACIÓN DE LA FUNCIÓN RENDERIZAR PRODUCTOS
+// ========================================
+
+// ========================================
+// INICIO: FUNCIONALIDAD PARA EL CARRITO DESPLEGABLE (AGREGAR ESTA SECCIÓN AQUÍ)
+// ========================================
+// Función para actualizar el carrito desplegable en el navbar
+function actualizarCarritoDropdown() {
+    const cartDropdownItems = document.getElementById('cart-dropdown-items');
+    const cartDropdownTotal = document.getElementById('cart-dropdown-total');
+    
+    if (carrito.length === 0) {
+        cartDropdownItems.innerHTML = `
+            <div class="empty-cart">
+                <p>Tu carrito está vacío</p>
+            </div>
+        `;
+        cartDropdownTotal.textContent = '$0';
+        return;
+    }
+    
+    let total = 0;
+    cartDropdownItems.innerHTML = '';
+    
+    carrito.forEach(item => {
+        const itemTotal = item.precio * item.cantidad;
+        total += itemTotal;
+        
+        const itemElement = document.createElement('div');
+        itemElement.className = 'cart-item';
+        itemElement.innerHTML = `
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h6>${item.nombre}</h6>
+                    <div class="item-details">
+                        $${item.precio} x ${item.cantidad}
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="item-price">$${itemTotal}</span>
+                    <i class="fas fa-times remove-item" onclick="eliminarDelCarrito(${item.id})"></i>
+                </div>
+            </div>
+        `;
+        cartDropdownItems.appendChild(itemElement);
+    });
+    
+    cartDropdownTotal.textContent = `$${total}`;
+}
+
+// ========================================
+// FIN: FUNCIONALIDAD PARA EL CARRITO DESPLEGABLE
+// ========================================
 
 // Modificar la cantidad de un producto
 function modificarCantidad(productoId, cambio) {
@@ -77,7 +254,7 @@ function modificarCantidad(productoId, cambio) {
     input.value = nuevaCantidad;
 }
 
-// Agregar producto al carrito
+// AGREGAR PRODUCTO AL CARRITO 
 function agregarAlCarrito(productoId) {
     const input = document.getElementById(`cantidad-${productoId}`);
     const cantidad = parseInt(input.value);
@@ -106,7 +283,7 @@ function agregarAlCarrito(productoId) {
         });
     }
     
-    // Actualizar stock
+    // ACTUALIZAR STOCK 
     stock[productoId] -= cantidad;
     document.getElementById(`stock-${productoId}`).textContent = stock[productoId];
     
@@ -180,7 +357,7 @@ function actualizarCarrito() {
     cartBadge.textContent = carrito.reduce((acc, item) => acc + item.cantidad, 0);
 }
 
-// Eliminar producto del carrito
+// ELIMINAR PRODUCTO DEL CARRITO 
 function eliminarDelCarrito(productoId) {
     const itemIndex = carrito.findIndex(item => item.id === productoId);
     
@@ -199,7 +376,7 @@ function eliminarDelCarrito(productoId) {
     }
 }
 
-// Actualizar cantidad en el carrito
+// ACTUALIZAR CANTIDAD EN EL CARRITO 
 function actualizarCantidadCarrito(productoId, nuevaCantidad) {
     nuevaCantidad = parseInt(nuevaCantidad);
     const item = carrito.find(item => item.id === productoId);

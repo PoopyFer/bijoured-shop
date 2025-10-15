@@ -9,7 +9,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css/main.css">
 </head>
+
 <body>
+    <!-- MARQUESINA - ARRIBA DEL NAVBAR -->
+    <div class="marquee-container">
+        <div class="marquee-content">
+            <span class="marquee-item">3 CUOTAS SIN INTERES EN COMPRAS SUPERIORES A $80.000 </span>
+            <span class="marquee-item">ENVIOS GRATIS A PARTIR DE 160.000</span>
+            <span class="marquee-item">🎁 REGALO SORPRESA EN TU PRIMERA COMPRA 🎁</span>
+            <span class="marquee-item">ENVIOS GRATIS A PARTIR DE 160.000</span>
+            <span class="marquee-item">SUSCRIBITE! AL CLUB MI BIJURED Y GANA DESCUENTOS </span>
+            <!-- Frases duplicadas para efecto continuo -->
+            <span class="marquee-item">3 CUOTAS SIN INTERES EN COMPRAS SUPERIORES A $80.000 </span>
+            <span class="marquee-item">ENVIOS GRATIS A PARTIR DE 160.000</span>
+            <span class="marquee-item">🎁 REGALO SORPRESA EN TU PRIMERA COMPRA 🎁</span>
+            <span class="marquee-item">ENVIOS GRATIS A PARTIR DE 160.000</span>
+            <span class="marquee-item">SUSCRIBITE! AL CLUB MI BIJURED Y GANA DESCUENTOS</span>
+        </div>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
@@ -20,21 +38,81 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+                
+                <!-- NAVBAR - BUSCADOR DESPLEGABLE -->
                 <ul class="navbar-nav ms-auto">
+                    <!-- Inicio -->
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">Inicio</a>
                     </li>
+                    <!-- Tienda -->
                     <li class="nav-item">
-                        <a class="nav-link active" href="index.html">Tienda</a>
+                        <a class="nav-link active" href="tienda.html">Tienda</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> <span id="cart-badge" class="badge bg-light text-dark">0</span></a>
+                    <!-- ========== BUSCADOR DESPLEGABLE ========== -->
+                    <li class="nav-item dropdown">
+                        <!-- Botón lupa que abre el dropdown -->
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-search"></i> <!-- Icono lupa -->
+                        </a>
+                        
+                        <!-- Contenido del dropdown (buscador) -->
+                        <ul class="dropdown-menu dropdown-menu-end search-dropdown">
+                            <li>
+                                <div class="px-3 py-2">
+                                    <!-- Input de búsqueda -->
+                                    <div class="input-group">
+                                        <input 
+                                            type="text" 
+                                            id="search-input"
+                                            class="form-control search-nav-input" 
+                                            placeholder="Buscar productos..."
+                                            aria-label="Buscar productos">
+                                        <!-- Botón limpiar (se muestra solo cuando hay texto) -->
+                                        <button id="clear-search" class="btn btn-outline-secondary" type="button" style="display: none;">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <!-- Info de resultados (cantidad, etc.) -->
+                                    <div id="search-results-info" class="search-results-info mt-2 small"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Carrito -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-shopping-cart"></i> 
+                            <span id="cart-badge" class="badge bg-light text-dark">0</span>
+                        </a>
+                        <!-- Dropdown del carrito -->
+                        <ul class="dropdown-menu dropdown-menu-end cart-dropdown">
+                            <li>
+                                <div class="px-3 py-2">
+                                    <h6 class="dropdown-header">Tu Carrito</h6>
+                                    <div id="cart-dropdown-items">
+                                        <div class="empty-cart">
+                                            <p>Tu carrito está vacío</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-2">
+                                        <strong>Total: <span id="cart-dropdown-total">$0</span></strong>
+                                    </div>
+                                    <div class="d-grid gap-2 mt-2">
+                                        <button class="btn btn-sm btn-primary" id="dropdown-ver-carrito">Ver Carrito</button>
+                                        <button class="btn btn-sm btn-success" id="dropdown-finalizar">Finalizar Compra</button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-
+    
+    
     <div class="container my-5">
         <h1 class="text-center mb-5">Tienda de Collares</h1>
         
@@ -43,16 +121,21 @@
             <div class="col-lg-8">
                 <h2 class="section-title">Descubrí Cristal Color</h2>
                 <div class="row" id="productos-container">
-                    <!-- Los productos se cargarán dinámicamente con JavaScript -->
+                    <!-- LOS PRODUCTOS SE CARGARAN dinámicamente con JavaScript -->
                 </div>
             </div>
             
             <!-- Carrito -->
             <div class="col-lg-4">
-                <div class="sticky-top" style="top: 20px;">
+                <div class="cart-mobile-wrapper">
                     <div class="card">
-                        <div class="card-body">
-                            <h2 class="section-title">Tu Carrito</h2>
+                        <div class="card-header d-flex justify-content-between align-items-center" id="cart-header">
+                            <h2 class="section-title mb-0">Tu Carrito</h2>
+                            <button class="btn btn-sm btn-outline-secondary d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#cart-content" aria-expanded="false">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="card-body collapse" id="cart-content">
                             <div id="cart-items">
                                 <div class="empty-cart">
                                     <i class="fas fa-shopping-cart fa-2x mb-3"></i>
@@ -70,16 +153,16 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
+        </div> <!-- Cierre del row -->
+    </div> <!--Cierre del Container--> 
+    
     <!-- Footer con formulario de suscripción -->
     <footer class="footer mt-5">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
                     <h5>Suscríbete a nuestras novedades</h5>
-                    <p>Recibe promociones exclusivas y sé el primero en conocer nuestras nuevas colecciones.</p>
+                    <p>Recibi promociones exclusivas!</p>
                     <form id="newsletter-form" class="mb-3">
                         <div class="input-group">
                             <input type="email" class="form-control" placeholder="Tu correo electrónico" required>
